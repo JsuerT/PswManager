@@ -28,6 +28,7 @@ public class Start{
           break;
         case 2:
           System.out.println("VIEW ENTRIES");
+          PswService.viewPswEntry();
           break;
         case 3: 
           System.out.println("BYE");

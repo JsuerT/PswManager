@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.util.Scanner;
+import java.util.stream;
 
 public class PswService {
     private static class Entry {
@@ -20,7 +21,7 @@ public class PswService {
         }
 
         public String toFileString() {
-            return application + ";" + username + ";" + psw + ";" + email + ";" + additionalInfo;
+            return application + "(" + username + "; " + psw + "; " + email + "; " + additionalInfo + ";)";
         }
     }
 
@@ -67,6 +68,20 @@ public class PswService {
             System.out.println("Entry successfully saved to " + file.getName());
         } catch (IOException e) {
             System.out.println("Error while writing to file");
+            e.printStackTrace();
+        }
+    }
+    ///////////////////////////////////////////////////////////////
+
+    public static void viewPswEntry(){
+        String fileName = "pswFile.txt";
+        System.out.println("Enter String");
+        String searchedEntry = scanner.nextLine();    
+       try (Stream<String> stream = fileName.lines(Paths.get(fileName))) {
+
+            stream.filter(line -> line.contains(" " + searchedEntry+ " ")).forEach(System.out::println);
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
