@@ -6,12 +6,14 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.util.Scanner;
-import java.util.stream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
 
 public class PswService {
     private static class Entry {
         private String application, username, psw, email, additionalInfo;
-        
+
         public Entry(String application, String username, String psw, String email, String additionalInfo) {
             this.application = application;
             this.username = username;
@@ -27,7 +29,7 @@ public class PswService {
 
     public static void addPswEntry(Scanner scanner) {
         File pswFile = new File("pswFile.txt");
-        
+
         try {
             if (pswFile.createNewFile()) {
                 System.out.println("File created: " + pswFile.getName());
@@ -36,9 +38,9 @@ public class PswService {
             System.out.println("Error while creating pswFile");
             e.printStackTrace();
         }
-        
+
         Entry newEntry = addInput(scanner);
-        
+
         saveToFile(pswFile, newEntry);
     }
 
@@ -64,7 +66,7 @@ public class PswService {
     private static void saveToFile(File file, Entry entry) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
             writer.write(entry.toFileString());
-            writer.newLine(); 
+            writer.newLine();
             System.out.println("Entry successfully saved to " + file.getName());
         } catch (IOException e) {
             System.out.println("Error while writing to file");
@@ -72,16 +74,19 @@ public class PswService {
         }
     }
     ///////////////////////////////////////////////////////////////
-
-    public static void viewPswEntry(){
+    public static void viewPswEntry(Scanner scanner) {
         String fileName = "pswFile.txt";
-        System.out.println("Enter String");
-        String searchedEntry = scanner.nextLine();    
-       try (Stream<String> stream = fileName.lines(Paths.get(fileName))) {
+        System.out.println("Enter string to search:");
 
-            stream.filter(line -> line.contains(" " + searchedEntry+ " ")).forEach(System.out::println);
+        String searchedEntry = scanner.nextLine();
+
+        try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
+
+            stream.filter(line -> line.contains(searchedEntry))
+                .forEach(System.out::println);
 
         } catch (IOException e) {
+            System.out.println("Error reading the file.");
             e.printStackTrace();
         }
     }
