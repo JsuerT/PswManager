@@ -1,6 +1,7 @@
 package service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.io.IOException;
 import java.io.File;
 import java.io.FileWriter;
@@ -9,6 +10,7 @@ import java.util.Scanner;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 public class PswService {
     private static class Entry {
@@ -40,7 +42,6 @@ public class PswService {
         }
 
         Entry newEntry = addInput(scanner);
-
         saveToFile(pswFile, newEntry);
     }
 
@@ -73,21 +74,56 @@ public class PswService {
             e.printStackTrace();
         }
     }
-    ///////////////////////////////////////////////////////////////
+
     public static void viewPswEntry(Scanner scanner) {
         String fileName = "pswFile.txt";
-        System.out.println("Enter string to search:");
-
+        System.out.println("Enter Search String:");
         String searchedEntry = scanner.nextLine();
 
-        try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
+        try {
+            List<String> allLines = Files.readAllLines(Paths.get(fileName));
+            List<String> matches = allLines.stream()
+                    .filter(line -> line.contains(searchedEntry))
+                    .collect(Collectors.toList());
 
-            stream.filter(line -> line.contains(searchedEntry))
-                .forEach(System.out::println);
+            if (matches.isEmpty()) {
+                System.out.println("No entries found.");
+                return;
+            }
+
+            for (int i = 0; i < matches.size(); i++) {
+                System.out.println((i + 1) + ") " + matches.get(i));
+            }
+
+            System.out.println("Do you want to edit an entry? /y /n");
+            String editConfirm = scanner.nextLine();
+
+            if (editConfirm.equalsIgnoreCase("y")) {
+                System.out.println("Enter the number of the entry to edit:");
+                int indexToEdit = Integer.parseInt(scanner.nextLine()) - 1;
+
+                if (indexToEdit >= 0 && indexToEdit < matches.size()) {
+                    String lineToReplace = matches.get(indexToEdit);
+                    
+                    System.out.println("Enter new details:");
+                    Entry updatedEntry = addInput(scanner);
+
+                    for (int i = 0; i < allLines.size(); i++) {
+                        if (allLines.get(i).equals(lineToReplace)) {
+                            allLines.set(i, updatedEntry.toFileString());
+                            break;
+                        }
+                    }
+
+                    Files.write(Paths.get(fileName), allLines);
+                    System.out.println("Entry updated successfully.");
+                } else {
+                    System.out.println("Invalid selection.");
+                }
+            }
 
         } catch (IOException e) {
-            System.out.println("Error reading the file.");
-            e.printStackTrace();
+            System.out.println("Error: File not found or readable.");
         }
     }
 }
