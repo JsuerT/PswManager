@@ -65,8 +65,11 @@ public class PswService {
     }
 
     private static void saveToFile(File file, Entry entry) {
+        String encryptedEntry = encryptEntry(entry.toFileString());
+        //hier encrypt data
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
-            writer.write(entry.toFileString());
+            //writer.write(entry.toFileString());
+            writer.write(encryptedEntry);
             writer.newLine();
             System.out.println("Entry successfully saved to " + file.getName());
         } catch (IOException e) {
@@ -74,8 +77,10 @@ public class PswService {
             e.printStackTrace();
         }
     }
+    /////////////////////////
 
     public static void viewPswEntry(Scanner scanner) {
+        //hier muss noch rein dass man das wieder entschlüsseln muss
         String fileName = "pswFile.txt";
         System.out.println("Enter Search String:");
         String searchedEntry = scanner.nextLine();
@@ -126,4 +131,12 @@ public class PswService {
             System.out.println("Error: File not found or readable.");
         }
     }
+    
+    ////////////////////////////////////
+    ///
+    private static String encryptEntry(){
+        //java block cipher
+        //https://stackoverflow.com/questions/1205135/how-to-encrypt-string-in-java --notizen
+    }
+
 }
