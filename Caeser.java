@@ -2,43 +2,39 @@ package service;
 
 import java.util.HashMap; 
 
-public class Caeser{
-    HashMap<Character, Character> encryption; 
-    HashMap<Character, Character> decryption; 
+public class Caeser {
+    private HashMap<Character, Character> encryptionMap; 
+    private HashMap<Character, Character> decryptionMap; 
 
-    public Caesar(int moveChar){
-        super(); 
-        encryption = new HashMap<Character, Character>(); 
-        decryption = new HashMap<Character, Character>(); 
-
+    public Caeser(int moveChar) {
+        encryptionMap = new HashMap<>(); 
+        decryptionMap = new HashMap<>(); 
         initCaesar(moveChar); 
     }
 
-    private void initChar(int moveChar){
-        for(char loop='A'; loop <= 'Z'; loop++){
-            if((loop+moveChar) <= 'Z'){
-            encryption.put(loop,(char) (loop+moveChar));
-            decryption.put((char) (loop+moveChar), loop);
-            }else{
-            encryption.put(loop,(char) (loop+moveChar-26));
-            decryption.put((char) (loop+moveChar-26), loop);
-
-            }            
-            
+    private void initCaesar(int moveChar) {
+        for (int i = 32; i < 127; i++) {
+            char original = (char) i;
+            char shifted = (char) (32 + (i - 32 + moveChar) % 95);
+            encryptionMap.put(original, shifted);
+            decryptionMap.put(shifted, original);
         }
     }
 
-    public String decryption(String text){
-        return translage(text, decryption);
+    public String encrypt(String text) {
+        return translate(text, encryptionMap);
     }
 
-    private String translate(String text, HashMap<Character, Character>alphabet){
-        String textOptimized = text.toUpperCase().replace(" ", "");
-        String final = "";
-        for (int = 0; i < textOptimized.length(); i++){
-            final += alphabet.get(textOptimized.charAt(i));
-        }
-        return text; 
+    public String decrypt(String text) {
+        return translate(text, decryptionMap);
+    }
 
+    private String translate(String text, HashMap<Character, Character> alphabet) {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            result.append(alphabet.getOrDefault(c, c));
+        }
+        return result.toString();
     }
 }
