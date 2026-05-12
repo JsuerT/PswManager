@@ -2,17 +2,21 @@ PASSWORDMANAGEMENTSYSTEM
 
 Introductions on Android via Termux
 
-1. Installation via Git
-   Requirement: "pkg install git"
-                "pkg install openjdk-21"
-   Prompt: "git clone https://github.com/JsuerT/PswManager"
-           "cd PswManager"
-           "javac Start.java"
-           "java Start"
+1. Installation via Git (Run PswManager)
+   Requirement:
+      "pkg install git"
+      "pkg install openjdk-21"
+   Prompt:
+      "git clone https://github.com/JsuerT/PswManager"
+      "cd PswManager"
+      "javac Start.java"
+      "java Start"
 
 
 /////////////////////////////////////////////////////////////////////
 
+
+2. Remote Access & Control via Desktop (SSH over ADB)
 Requirements: 
   application: Termux 
   preciding prompts (Termux): 
