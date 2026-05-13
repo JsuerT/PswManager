@@ -44,5 +44,10 @@ Connecting:
    (accept RSA PopUp on mobile)
    on desktop-terminal: "adb forward tcp:8022 tcp:8022"
    on desktop-terminal: "ssh localhost -p 8022"
-    
+
+
+Exit: 
+   on desktop-terminal: "exit"
+   on desktop-terminal: "adb forward --remove tcp:8022"
+   on desktop-terminal (optional): "pkill sshd"
  
