@@ -13,27 +13,28 @@ Introductions on Android via Termux
       "java Start"
 
 
-/////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
 
 
 2. Remote Access & Control via Desktop (SSH over ADB)
 Requirements: 
-  application: Termux 
+  application: Termux (mobile)
+  Enable USB debugging (mobile)
+
   preciding prompts (Termux): 
     "pkg update && pkg upgrade"
     "pkg install openjdk-21" 
     "pkg install openssh"
-  Installed java, openssh on Laptop, ...
+  Installed java, openssh on Laptop
 
     
-Enable USB debugging (mobile) 
-  
+Connecting: 
+   android: "passwd" and enter a new password  
+   android: "sshd"
 
-
-Installation: 
-  (android via Termux) 
-    "passwd" and enter a new password  
-
-  (on terminal (i use nixos)):
-    prompt "adb devices"
+   on dekstop-terminal (i use nixos): "adb devices" 
+   (accept RSA PopUp on mobile)
+   on desktop-terminal: "adb forward tcp:8022 tcp:8022"
+   on desktop-terminal: "ssh localhost -p 8022"
+    
   
